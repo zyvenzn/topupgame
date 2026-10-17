@@ -1,21 +1,21 @@
 "use strict";
 
-/* ===== Data (harga contoh, ganti sesuai supplier) ===== */
+/* ===== Data demo (harga contoh, verifikasi sebelum transaksi nyata) ===== */
 const GAMES = [
-  { id: "mlbb", name: "Mobile Legends", pub: "MOBA", cur: "Diamond", emoji: "⚔️", c: ["#7c5cff", "#22d3ee"], hot: true,
+  { id: "mlbb", name: "Mobile Legends", pub: "MOBA", cur: "Diamond", emoji: "⚔️", logo: "https://cdn.simpleicons.org/mobilelegends/6558F5", c: ["#7c5cff", "#22d3ee"], hot: true,
     fields: [{ k: "uid", l: "User ID", ph: "12345678" }, { k: "zone", l: "Zone ID", ph: "1234" }],
     packs: [["86 Diamond", 22000], ["172 Diamond", 44000], ["257 Diamond", 65000], ["344 Diamond", 87000], ["514 Diamond", 129000], ["706 Diamond", 175000], ["Weekly Diamond Pass", 28000]] },
-  { id: "ff", name: "Free Fire", pub: "Battle Royale", cur: "Diamond", emoji: "🔥", c: ["#f97316", "#ef4444"], hot: true,
+  { id: "ff", name: "Free Fire", pub: "Battle Royale", cur: "Diamond", emoji: "🔥", logo: "https://cdn.simpleicons.org/garena/EF4444", c: ["#f97316", "#ef4444"], hot: true,
     packs: [["70 Diamond", 10000], ["140 Diamond", 20000], ["355 Diamond", 50000], ["720 Diamond", 100000], ["Membership Mingguan", 29000]] },
-  { id: "pubgm", name: "PUBG Mobile", pub: "Battle Royale", cur: "UC", emoji: "🎯", c: ["#facc15", "#f59e0b"], hot: true,
+  { id: "pubgm", name: "PUBG Mobile", pub: "Battle Royale", cur: "UC", emoji: "🎯", logo: "https://cdn.simpleicons.org/pubg/F59E0B", c: ["#facc15", "#f59e0b"], hot: true,
     packs: [["60 UC", 15000], ["325 UC", 77000], ["660 UC", 152000], ["1800 UC", 380000]] },
-  { id: "genshin", name: "Genshin Impact", pub: "RPG", cur: "Genesis Crystal", emoji: "✨", c: ["#38bdf8", "#a78bfa"],
+  { id: "genshin", name: "Genshin Impact", pub: "RPG", cur: "Genesis Crystal", emoji: "✨", logo: "https://cdn.simpleicons.org/genshinimpact/6558F5", c: ["#38bdf8", "#a78bfa"],
     fields: [{ k: "uid", l: "UID", ph: "8xxxxxxxx" }, { k: "srv", l: "Server", opts: ["Asia", "America", "Europe", "TW/HK/MO"] }],
     packs: [["60 Genesis Crystal", 16000], ["330 Genesis Crystal", 79000], ["1090 Genesis Crystal", 249000], ["Blessing of the Welkin Moon", 79000]] },
-  { id: "valo", name: "Valorant", pub: "FPS", cur: "VP", emoji: "🎮", c: ["#fb7185", "#f43f5e"],
+  { id: "valo", name: "Valorant", pub: "FPS", cur: "VP", emoji: "🎮", logo: "https://cdn.simpleicons.org/valorant/EF4444", c: ["#fb7185", "#f43f5e"],
     fields: [{ k: "uid", l: "Riot ID", ph: "Nama#TAG" }],
     packs: [["475 VP", 59000], ["1000 VP", 119000], ["2050 VP", 239000], ["3650 VP", 419000]] },
-  { id: "cod", name: "Call of Duty Mobile", pub: "FPS", cur: "CP", emoji: "💥", c: ["#84cc16", "#16a34a"],
+  { id: "cod", name: "Call of Duty Mobile", pub: "FPS", cur: "CP", emoji: "💥", logo: "https://cdn.simpleicons.org/callofduty/16A34A", c: ["#84cc16", "#16a34a"],
     packs: [["53 CP", 10000], ["112 CP", 20000], ["278 CP", 50000], ["580 CP", 100000]] }
 ];
 
@@ -55,26 +55,29 @@ function findOrder(id) {
 
 /* ===== Tampilan ===== */
 const iconStyle = g => `background:linear-gradient(135deg,${g.c[0]},${g.c[1]})`;
-const cardHTML = g => `<a class="card" href="#/game/${g.id}"><div class="ico" style="${iconStyle(g)}">${g.emoji}</div><b>${g.name}</b><small>${g.pub} • ${g.cur}</small></a>`;
+const logoHTML = g => g.logo
+  ? `<img class="game-logo" src="${g.logo}" alt="Logo ${esc(g.name)}" loading="lazy" onerror="this.remove();this.parentElement.textContent='${g.emoji}'">`
+  : g.emoji;
+const cardHTML = g => `<a class="card" href="#/game/${g.id}"><div class="ico" style="${iconStyle(g)}">${logoHTML(g)}</div><b>${g.name}</b><small>${g.pub} • ${g.cur}</small></a>`;
 
 function viewHome() {
   app.innerHTML = `
   <section class="hero">
-    <span class="chip">🔥 Buka 24 jam</span>
-    <h1>Top Up Game <em>Cepat & Murah</em></h1>
-    <p>Pilih game, masukkan ID, bayar, selesai.</p>
+    <span class="chip">✦ TOP UP GAME FAVORIT DALAM SATU TEMPAT</span>
+    <h1>Upgrade permainanmu.<br><em>Top up tanpa ribet.</em></h1>
+    <p>Pilih game favorit, tentukan nominal, lalu lanjutkan pesanan dengan alur yang simpel dan jelas.</p>
     <div class="search"><input id="q" type="search" placeholder="Cari game..." autocomplete="off"></div>
   </section>
   <div class="wrap">
-    <div id="hotWrap"><h2>🔥 Populer</h2><div class="grid" id="hot"></div></div>
-    <h2>Semua Game</h2>
+    <div id="hotWrap"><h2>🔥 Pilihan populer</h2><div class="grid" id="hot"></div></div>
+    <h2>Jelajahi semua game</h2>
     <div class="grid" id="all"></div>
     <p class="muted" id="empty" hidden>Game tidak ditemukan.</p>
     <div class="perks">
-      <div class="perk">⚡<b>Proses Cepat</b><p>Alur order singkat, hanya 4 langkah.</p></div>
-      <div class="perk">🔒<b>Aman</b><p>Tanpa password akun, hanya ID game.</p></div>
-      <div class="perk">🕒<b>24 Jam</b><p>Pesan kapan saja, termasuk tengah malam.</p></div>
-      <div class="perk">💸<b>Harga Jelas</b><p>Biaya admin tampil sebelum bayar.</p></div>
+      <div class="perk">⚡<b>Alur praktis</b><p>Pilih game dan nominal lewat langkah yang mudah diikuti.</p></div>
+      <div class="perk">🔐<b>Tanpa password</b><p>Form hanya meminta ID game yang diperlukan.</p></div>
+      <div class="perk">🎮<b>Pilihan game</b><p>Temukan beberapa game populer dalam satu katalog.</p></div>
+      <div class="perk">🧾<b>Ringkasan transparan</b><p>Harga dan biaya admin ditampilkan sebelum membuat pesanan.</p></div>
     </div>
   </div>`;
   $("#hot").innerHTML = GAMES.filter(g => g.hot).map(cardHTML).join("");
@@ -95,7 +98,7 @@ function viewGame(g) {
   app.innerHTML = `
   <div class="wrap">
     <a class="back" href="#/">← Kembali</a>
-    <div class="ghead"><div class="ico" style="${iconStyle(g)}">${g.emoji}</div><div><h1>${g.name}</h1><small>${g.pub} • Top up ${g.cur}</small></div></div>
+    <div class="ghead"><div class="ico" style="${iconStyle(g)}">${logoHTML(g)}</div><div><h1>${g.name}</h1><small>${g.pub} • Top up ${g.cur}</small></div></div>
     <div class="cols">
       <div class="steps">
         <section class="box"><h3><i>1</i> Masukkan ID Akun</h3>
