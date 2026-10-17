@@ -19,7 +19,7 @@ const rupiah=n=>"Rp"+Number(n).toLocaleString("id-ID");
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fee=(price,m)=>Math.round(price*(m.pct||0))+(m.flat||0);
 const loadOrders=()=>{try{return JSON.parse(localStorage.getItem("nexora_orders")||"[]")}catch{return[]}};
-const saveOrders=a=>{try{localStorage.setItem("nexora_orders",JSON.stringify(a.slice(0,50))}catch{}};
+const saveOrders=a=>{try{localStorage.setItem("nexora_orders",JSON.stringify(a.slice(0,50)))}catch{}};
 const findOrder=id=>loadOrders().find(o=>o.id===String(id||"").trim().toUpperCase());
 const gameIcon=g=>g.logo?'<img class="game-logo" src="'+g.logo+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="fallback-icon" style="display:none">'+g.emoji+'</span>':'<span>'+g.emoji+'</span>';
 const card=g=>'<a class="game-card" href="#/game/'+g.id+'"><div class="game-art" style="--game-color:'+g.color+'">'+gameIcon(g)+'</div><div class="game-card-copy"><b>'+esc(g.name)+'</b><small>'+esc(g.pub)+' · '+esc(g.cur)+'</small></div><span class="card-arrow">↗</span></a>';
