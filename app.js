@@ -1,234 +1,51 @@
+/* NEXORA — storefront demo inspired by common game top-up storefront patterns. */
 "use strict";
-
-/* ===== Data demo (harga contoh, verifikasi sebelum transaksi nyata) ===== */
 const GAMES = [
-  { id: "mlbb", name: "Mobile Legends", pub: "MOBA", cur: "Diamond", emoji: "⚔️", logo: "https://cdn.simpleicons.org/mobilelegends/6558F5", c: ["#7c5cff", "#22d3ee"], hot: true,
-    fields: [{ k: "uid", l: "User ID", ph: "12345678" }, { k: "zone", l: "Zone ID", ph: "1234" }],
-    packs: [["86 Diamond", 22000], ["172 Diamond", 44000], ["257 Diamond", 65000], ["344 Diamond", 87000], ["514 Diamond", 129000], ["706 Diamond", 175000], ["Weekly Diamond Pass", 28000]] },
-  { id: "ff", name: "Free Fire", pub: "Battle Royale", cur: "Diamond", emoji: "🔥", logo: "https://cdn.simpleicons.org/garena/EF4444", c: ["#f97316", "#ef4444"], hot: true,
-    packs: [["70 Diamond", 10000], ["140 Diamond", 20000], ["355 Diamond", 50000], ["720 Diamond", 100000], ["Membership Mingguan", 29000]] },
-  { id: "pubgm", name: "PUBG Mobile", pub: "Battle Royale", cur: "UC", emoji: "🎯", logo: "https://cdn.simpleicons.org/pubg/F59E0B", c: ["#facc15", "#f59e0b"], hot: true,
-    packs: [["60 UC", 15000], ["325 UC", 77000], ["660 UC", 152000], ["1800 UC", 380000]] },
-  { id: "genshin", name: "Genshin Impact", pub: "RPG", cur: "Genesis Crystal", emoji: "✨", logo: "https://cdn.simpleicons.org/genshinimpact/6558F5", c: ["#38bdf8", "#a78bfa"],
-    fields: [{ k: "uid", l: "UID", ph: "8xxxxxxxx" }, { k: "srv", l: "Server", opts: ["Asia", "America", "Europe", "TW/HK/MO"] }],
-    packs: [["60 Genesis Crystal", 16000], ["330 Genesis Crystal", 79000], ["1090 Genesis Crystal", 249000], ["Blessing of the Welkin Moon", 79000]] },
-  { id: "valo", name: "Valorant", pub: "FPS", cur: "VP", emoji: "🎮", logo: "https://cdn.simpleicons.org/valorant/EF4444", c: ["#fb7185", "#f43f5e"],
-    fields: [{ k: "uid", l: "Riot ID", ph: "Nama#TAG" }],
-    packs: [["475 VP", 59000], ["1000 VP", 119000], ["2050 VP", 239000], ["3650 VP", 419000]] },
-  { id: "cod", name: "Call of Duty Mobile", pub: "FPS", cur: "CP", emoji: "💥", logo: "https://cdn.simpleicons.org/callofduty/16A34A", c: ["#84cc16", "#16a34a"],
-    packs: [["53 CP", 10000], ["112 CP", 20000], ["278 CP", 50000], ["580 CP", 100000]] }
+ {id:"mlbb",slug:"mobile-legends",name:"Mobile Legends",pub:"Moonton",cur:"Diamond",emoji:"⚔️",logo:"https://cdn.simpleicons.org/mobilelegends/6558F5",color:"#6155d9",fields:[["uid","User ID","Masukkan User ID"],["zone","Server ID","Masukkan Server ID"]],packs:[["86 Diamonds",22000],["172 Diamonds",44000],["257 Diamonds",65000],["344 Diamonds",87000],["514 Diamonds",129000],["706 Diamonds",175000]]},
+ {id:"wdp",slug:"wdp-mobile-legends",name:"Weekly Diamond Pass",short:"Weekly Diamond Pass ML",pub:"Moonton",cur:"Weekly Diamond Pass",emoji:"💎",logo:"https://cdn.simpleicons.org/mobilelegends/6558F5",color:"#6155d9",fields:[["uid","User ID","Masukkan User ID"],["zone","Server ID","Masukkan Server ID"]],packs:[["1x Weekly Diamond Pass",28000],["2x Weekly Diamond Pass",56000],["3x Weekly Diamond Pass",84000]]},
+ {id:"mcgg",slug:"magic-chess-go-go",name:"Magic Chess: Go Go",pub:"Vizta Games",cur:"Diamond",emoji:"♟️",logo:"https://cdn.simpleicons.org/mobilelegends/6558F5",color:"#8959d9",fields:[["uid","User ID","Masukkan User ID"],["zone","Server ID","Masukkan Server ID"]],packs:[["50 Diamonds",15000],["150 Diamonds",45000],["250 Diamonds",75000],["500 Diamonds",150000]]},
+ {id:"arena",slug:"arena-breakout-infinite",name:"Arena Breakout: Infinite",pub:"Level Infinite",cur:"Bonds",emoji:"🎯",logo:"https://cdn.simpleicons.org/levelinfinite/333333",color:"#6b7559",fields:[["uid","Player ID","Masukkan Player ID"]],packs:[["60 Bonds",15000],["310 Bonds",75000],["630 Bonds",149000],["1580 Bonds",369000]]},
+ {id:"ff",slug:"free-fire",name:"Free Fire",pub:"Garena",cur:"Diamond",emoji:"🔥",logo:"https://cdn.simpleicons.org/garena/EF4444",color:"#f16b36",fields:[["uid","Player ID","Masukkan Player ID"]],packs:[["70 Diamonds",10000],["140 Diamonds",20000],["355 Diamonds",50000],["720 Diamonds",100000]]},
+ {id:"ffmax",slug:"free-fire-max",name:"Free Fire MAX",pub:"Garena",cur:"Diamond",emoji:"🔥",logo:"https://cdn.simpleicons.org/garena/EF4444",color:"#e05a31",fields:[["uid","Player ID","Masukkan Player ID"]],packs:[["70 Diamonds",10000],["140 Diamonds",20000],["355 Diamonds",50000],["720 Diamonds",100000]]},
+ {id:"pubgm",slug:"pubg-mobile",name:"PUBG Mobile",pub:"Level Infinite",cur:"UC",emoji:"🎯",logo:"https://cdn.simpleicons.org/pubg/F59E0B",color:"#bd8b24",fields:[["uid","Character ID","Masukkan Character ID"]],packs:[["60 UC",15000],["325 UC",77000],["660 UC",152000],["1800 UC",380000]]},
+ {id:"hok",slug:"honor-of-kings",name:"Honor of Kings",pub:"Level Infinite",cur:"Token",emoji:"👑",logo:"https://cdn.simpleicons.org/levelinfinite/333333",color:"#a77b3b",fields:[["uid","Player ID","Masukkan Player ID"]],packs:[["80 Tokens",16000],["240 Tokens",48000],["400 Tokens",80000],["800 Tokens",160000]]},
+ {id:"genshin",slug:"genshin-impact",name:"Genshin Impact",pub:"HoYoverse",cur:"Genesis Crystal",emoji:"✨",logo:"https://cdn.simpleicons.org/genshinimpact/6558F5",color:"#5d91d7",fields:[["uid","UID","Masukkan UID"],["server","Server","Pilih server",["Asia","America","Europe","TW/HK/MO"]]],packs:[["60 Genesis Crystal",16000],["330 Genesis Crystal",79000],["1090 Genesis Crystal",249000]]},
+ {id:"valo",slug:"valorant",name:"Valorant",pub:"Riot Games",cur:"VP",emoji:"🎮",logo:"https://cdn.simpleicons.org/valorant/EF4444",color:"#d94b62",fields:[["uid","Riot ID","Nama#TAG"]],packs:[["475 VP",59000],["1000 VP",119000],["2050 VP",239000]]}
 ];
-
-const PAY = [
-  { name: "QRIS", pct: 0.007, flat: 0, note: "Semua e-wallet & m-banking" },
-  { name: "DANA", pct: 0.015, flat: 0, note: "Biaya 1,5%" },
-  { name: "OVO", pct: 0.015, flat: 0, note: "Biaya 1,5%" },
-  { name: "GoPay", pct: 0.015, flat: 0, note: "Biaya 1,5%" },
-  { name: "ShopeePay", pct: 0.015, flat: 0, note: "Biaya 1,5%" },
-  { name: "Transfer BCA (VA)", pct: 0, flat: 4000, note: "Biaya Rp4.000" }
-];
-
-const FAQ = [
-  ["Berapa lama prosesnya?", "Pada toko sungguhan, item masuk otomatis setelah pembayaran terkonfirmasi, biasanya dalam hitungan detik sampai beberapa menit."],
-  ["Apakah perlu memberi password akun game?", "Tidak. Kami hanya meminta ID akun dan server/zone. Jangan pernah membagikan password."],
-  ["Salah memasukkan ID, bagaimana?", "Periksa kembali ID sebelum membayar. Item yang sudah terkirim ke ID yang salah tidak bisa ditarik kembali."],
-  ["Apakah ini toko sungguhan?", "Belum. Ini versi demo: pembayaran dan pengiriman item belum terhubung, dan data transaksi hanya tersimpan di browser ini."]
-];
-
-/* ===== Helper ===== */
-const $ = (s, r = document) => r.querySelector(s);
-const app = $("#app");
-const rupiah = n => "Rp" + Number(n).toLocaleString("id-ID");
-const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const fee = (price, m) => Math.round(price * m.pct) + m.flat;
-
-function loadOrders() {
-  try { return JSON.parse(localStorage.getItem("topupku_orders") || "[]"); } catch (e) { return []; }
+const PAY = [{name:"QRIS",note:"E-wallet & mobile banking",pct:.007},{name:"DANA",note:"Dompet digital",pct:.015},{name:"GoPay",note:"Dompet digital",pct:.015},{name:"OVO",note:"Dompet digital",pct:.015},{name:"ShopeePay",note:"Dompet digital",pct:.015},{name:"Virtual Account",note:"Transfer bank",flat:4000}];
+const FAQ=[["Bagaimana cara top up?","Pilih game, masukkan data akun yang diminta, pilih nominal dan metode pembayaran, lalu periksa ringkasan pesanan."],["Apakah saya perlu memberikan password?","Tidak. Jangan pernah memberikan password akun game kepada siapa pun."],["Berapa lama proses transaksi?","Waktu proses pada layanan nyata bergantung pada penyedia produk dan konfirmasi pembayaran. Website ini masih mode demo."],["Apakah pembayaran sudah aktif?","Belum. Pembayaran dan pengiriman item belum terhubung. Harga yang tampil hanya contoh untuk demo tampilan."],["Bagaimana jika salah memasukkan ID?","Periksa kembali data akun sebelum membuat pesanan. Jangan lanjutkan transaksi jika data belum benar."]];
+const $=s=>document.querySelector(s), app=$("#app");
+const rupiah=n=>"Rp"+Number(n).toLocaleString("id-ID");
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fee=(price,m)=>Math.round(price*(m.pct||0))+(m.flat||0);
+const loadOrders=()=>{try{return JSON.parse(localStorage.getItem("nexora_orders")||"[]")}catch{return[]}};
+const saveOrders=a=>{try{localStorage.setItem("nexora_orders",JSON.stringify(a.slice(0,50)))}catch{}};
+const findOrder=id=>loadOrders().find(o=>o.id===String(id||"").trim().toUpperCase());
+const gameIcon=g=>g.logo?'<img class="game-logo" src="'+g.logo+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="fallback-icon" style="display:none">'+g.emoji+'</span>':'<span>'+g.emoji+'</span>';
+const card=g=>'<a class="game-card" href="#/game/'+g.id+'"><div class="game-art" style="--game-color:'+g.color+'">'+gameIcon(g)+'</div><div class="game-card-copy"><b>'+esc(g.name)+'</b><small>'+esc(g.pub)+' · '+esc(g.cur)+'</small></div><span class="card-arrow">↗</span></a>';
+function viewHome(){
+ app.innerHTML='<section class="home-hero"><div class="wrap hero-layout"><div class="hero-copy"><span class="eyebrow"><i></i> TOP UP GAME FAVORITMU</span><h1>Top up game jadi<br><em>lebih mudah.</em></h1><p>Penuhi kebutuhan gaming kamu dengan proses pemesanan yang praktis, tampilan yang jelas, dan pilihan game favorit.</p><div class="hero-actions"><a class="primary-link" href="#games">Cari game <span>↓</span></a><span class="trust-copy">✦ Praktis · Aman · Mudah</span></div></div><div class="hero-art"><div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div><div class="hero-tile tile-one">⚔️</div><div class="hero-tile tile-two">🔥</div><div class="hero-tile tile-three">🎯</div><div class="hero-center"><span>NX</span><b>LEVEL UP</b><small>YOUR GAME</small></div></div></div></section><div class="wrap"><section class="trust-strip"><div><span>⚡</span><b>Proses praktis</b><small>Alur pemesanan mudah</small></div><div><span>🔒</span><b>Privasi akun</b><small>Tidak perlu password</small></div><div><span>🎧</span><b>Butuh bantuan?</b><small>Lihat FAQ kami</small></div></section><section class="catalog-section" id="games"><div class="section-heading"><div><span class="eyebrow">KATALOG NEXORA</span><h2>🔥 Populer sekarang</h2><p>Pilih game dan temukan produk yang kamu butuhkan.</p></div><label class="catalog-search"><span>⌕</span><input id="q" type="search" placeholder="Cari game..." autocomplete="off"></label></div><div class="category-pills"><button class="pill active" data-cat="all">Semua game</button><button class="pill" data-cat="mobile">Mobile game</button><button class="pill" data-cat="pc">PC game</button></div><div class="game-grid" id="catalog"></div><p id="empty" class="empty-state" hidden>Game tidak ditemukan.</p></section><section class="home-promo"><div><span class="eyebrow">GAMING TANPA RIBET</span><h2>Siap untuk level berikutnya?</h2><p>Pilih game favoritmu, tentukan nominal, dan periksa pesanan sebelum melanjutkan.</p></div><a class="primary-link" href="#games">Jelajahi game ↗</a></section><section class="article-section"><div><span class="eyebrow">BANTUAN PEMBELI</span><h2>Informasi sebelum top up</h2><p>Pastikan ID akun benar dan selalu periksa detail pesanan.</p></div><div class="info-cards"><a href="#/faq"><b>❔ Cara top up</b><span>Panduan memesan produk di NEXORA</span><strong>Pelajari →</strong></a><a href="#/cek"><b>🧾 Cek transaksi</b><span>Lihat invoice demo yang tersimpan di perangkat ini</span><strong>Cek sekarang →</strong></a></div></section></div>';
+ let cat="all"; const catalog=$("#catalog"), q=$("#q"), empty=$("#empty");
+ function draw(){const term=q.value.trim().toLowerCase();const list=GAMES.filter(g=>(cat==="all"||(cat==="mobile"&&g.id!=="arena"&&g.id!=="valo")||(cat==="pc"&&(g.id==="arena"||g.id==="valo")))&&(g.name+" "+g.pub+" "+g.cur).toLowerCase().includes(term));catalog.innerHTML=list.map(card).join("");empty.hidden=!!list.length}
+ q.addEventListener("input",draw);document.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>{cat=b.dataset.cat;document.querySelectorAll("[data-cat]").forEach(x=>x.classList.toggle("active",x===b));draw()});draw();
 }
-function saveOrders(list) {
-  try { localStorage.setItem("topupku_orders", JSON.stringify(list.slice(0, 50))); } catch (e) { /* abaikan */ }
+function viewGame(g){
+ const fields=g.fields||[["uid","User ID","Masukkan User ID"]];const state={pack:null,pay:null,qty:1,tab:"transaksi"};
+ app.innerHTML='<div class="wrap product-wrap"><div class="breadcrumbs"><a href="#/">Beranda</a><span>›</span><span>'+esc(g.name)+'</span></div><section class="product-intro"><div class="product-logo" style="--game-color:'+g.color+'">'+gameIcon(g)+'</div><div class="product-title"><span class="publisher">'+esc(g.pub)+'</span><h1>'+esc(g.name)+'</h1><p>Top up '+esc(g.cur)+' cepat dan mudah di NEXORA.</p><div class="product-badges"><span>⚡ Proses praktis</span><span>🔒 Pemesanan aman</span><span>🎧 Bantuan pelanggan</span></div></div></section><div class="service-promises"><div><span>✓</span><div><b>Jaminan layanan</b><small>Informasi pesanan jelas</small></div></div><div><span>🔐</span><div><b>Pembayaran aman</b><small>Mode demo saat ini</small></div></div><div><span>⚡</span><div><b>Proses praktis</b><small>Ikuti langkah pemesanan</small></div></div></div><div class="product-tabs"><button class="tab active" data-tab="transaksi">Transaksi</button><button class="tab" data-tab="keterangan">Keterangan</button></div><div class="product-layout"><div class="checkout-steps" id="transaksi"><section class="checkout-card"><div class="step-title"><i>1</i><div><h2>Masukkan Data Akun</h2><p>Isi data yang dibutuhkan untuk game ini.</p></div></div><div class="account-fields">'+fields.map(f=>'<label>'+esc(f[1])+(f[3]?'<select id="f_'+f[0]+'">'+f[3].map(o=>'<option>'+esc(o)+'</option>').join("")+'</select>':'<input id="f_'+f[0]+'" placeholder="'+esc(f[2])+'" autocomplete="off" maxlength="50">')+'</label>').join("")+'<p class="field-hint">Pastikan data akun sudah benar sebelum melanjutkan.</p></div></section><section class="checkout-card"><div class="step-title"><i>2</i><div><h2>Pilih Nominal</h2><p>Pilih produk yang ingin kamu beli.</p></div></div><div class="pack-grid" id="packs"></div><div class="quantity-row"><label for="qty">Jumlah pembelian</label><div class="quantity"><button id="minus" type="button" aria-label="Kurangi jumlah">−</button><input id="qty" type="number" min="1" max="10" value="1"><button id="plus" type="button" aria-label="Tambah jumlah">+</button></div></div></section><section class="checkout-card"><div class="step-title"><i>3</i><div><h2>Kode Promo</h2><p>Punya kode promo? Masukkan di bawah ini.</p></div></div><div class="promo-row"><input id="promo" placeholder="Ketik kode promo kamu"><button id="usepromo" type="button">Gunakan</button></div><p id="promomsg" class="inline-message">Promo belum tersedia dalam mode demo.</p></section><section class="checkout-card"><div class="step-title"><i>4</i><div><h2>Pilih Pembayaran</h2><p>Pilih metode pembayaran yang tersedia.</p></div></div><div class="payment-grid" id="pays"></div></section><section class="checkout-card"><div class="step-title"><i>5</i><div><h2>Detail Kontak</h2><p>Kontak untuk informasi terkait pesanan.</p></div></div><label class="contact-field">Nomor WhatsApp<input id="wa" inputmode="tel" placeholder="Contoh: 081234567890" maxlength="20"></label><p class="field-hint">Gunakan nomor yang aktif. Jangan masukkan password atau kode OTP akun game.</p></section></div><aside class="order-summary"><div class="summary-head"><h2>Ringkasan pesanan</h2><span>DEMO</span></div><div class="summary-game"><div class="mini-logo" style="--game-color:'+g.color+'">'+gameIcon(g)+'</div><div><b>'+esc(g.name)+'</b><small>'+esc(g.pub)+'</small></div></div><div id="summary-body"></div><div class="demo-warning">⚠️ Website masih dalam mode demo. Pembayaran dan pengiriman item belum aktif.</div><button class="primary-button" id="buy" type="button">Buat Pesanan <span>→</span></button><p id="err" class="error-message" aria-live="polite"></p><a class="help-link" href="#/faq">Butuh bantuan? Lihat FAQ</a></aside></div><section class="product-description" id="keterangan"><div class="description-copy"><span class="eyebrow">TENTANG PRODUK</span><h2>Top up '+esc(g.name)+' di NEXORA</h2><p>NEXORA menyediakan halaman pemesanan untuk '+esc(g.name)+'. Pilih nominal, masukkan ID akun yang diperlukan, lalu periksa kembali detail pesanan sebelum membuat invoice.</p><h3>Cara melakukan pemesanan</h3><ol><li>Masukkan ID akun game sesuai petunjuk.</li><li>Pilih nominal atau item yang diinginkan.</li><li>Pilih metode pembayaran dan masukkan kontak aktif.</li><li>Periksa ringkasan dan buat pesanan demo.</li></ol><p class="disclaimer">Harga yang ditampilkan adalah contoh. NEXORA tidak berafiliasi dengan penerbit game yang tercantum.</p></div><div class="review-card"><span class="eyebrow">ULASAN</span><h2>Ulasan pelanggan</h2><div class="rating-score">— <small>/ 5.0</small></div><p>Belum ada ulasan untuk produk ini.</p><div class="review-note">Fitur ulasan belum aktif di versi demo.</div></div></section><section class="faq-product"><span class="eyebrow">PUSAT BANTUAN</span><h2>Punya pertanyaan?</h2>'+FAQ.slice(0,4).map(([q,a])=>'<details><summary>'+esc(q)+'</summary><p>'+esc(a)+'</p></details>').join("")+'</section></div>';
+ const packs=$("#packs"), pays=$("#pays");
+ packs.innerHTML=g.packs.map((p,i)=>'<button type="button" class="pack-option" data-i="'+i+'"><span class="pack-gem">◆</span><b>'+esc(p[0])+'</b><strong>'+rupiah(p[1])+'</strong></button>').join("");
+ pays.innerHTML=PAY.map((m,i)=>'<button type="button" class="payment-option" data-i="'+i+'"><span class="payment-mark">'+(i===0?"▦":i===5?"🏦":"◈")+'</span><span><b>'+esc(m.name)+'</b><small>'+esc(m.note)+'</small></span><i>○</i></button>').join("");
+ function update(){const p=state.pack!==null?g.packs[state.pack]:null,m=state.pay!==null?PAY[state.pay]:null,qty=state.qty,base=p?p[1]*qty:0,admin=p&&m?fee(base,m):0;$("#summary-body").innerHTML='<div class="summary-row"><span>Produk</span><b>'+(p?esc(p[0]):"Belum dipilih")+'</b></div><div class="summary-row"><span>Harga</span><b>'+(p?rupiah(p[1]):"—")+'</b></div><div class="summary-row"><span>Jumlah</span><b>'+qty+'x</b></div><div class="summary-row"><span>Metode</span><b>'+(m?esc(m.name):"—")+'</b></div><div class="summary-row"><span>Biaya admin</span><b>'+(p&&m?rupiah(admin):"—")+'</b></div><div class="summary-total"><span>Total</span><b>'+(p&&m?rupiah(base+admin):"—")+'</b></div>'}
+ packs.onclick=e=>{const b=e.target.closest("button");if(!b)return;state.pack=+b.dataset.i;packs.querySelectorAll("button").forEach(x=>x.classList.toggle("selected",x===b));update()};
+ pays.onclick=e=>{const b=e.target.closest("button");if(!b)return;state.pay=+b.dataset.i;pays.querySelectorAll("button").forEach(x=>{x.classList.toggle("selected",x===b);x.querySelector("i").textContent=x===b?"●":"○"});update()};
+ $("#qty").onchange=()=>{state.qty=Math.max(1,Math.min(10,Number($("#qty").value)||1));$("#qty").value=state.qty;update()};$("#minus").onclick=()=>{$("#qty").value=Math.max(1,state.qty-1);$("#qty").dispatchEvent(new Event("change"))};$("#plus").onclick=()=>{$("#qty").value=Math.min(10,state.qty+1);$("#qty").dispatchEvent(new Event("change"))};
+ $("#usepromo").onclick=()=>{$("#promomsg").textContent="Kode promo belum dapat digunakan karena sistem promo belum terhubung.";$("#promomsg").classList.add("message-warning")};
+ document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x===b));$("#transaksi").style.display=b.dataset.tab==="transaksi"?"grid":"none";$("#keterangan").scrollIntoView({behavior:"smooth",block:"start"});if(b.dataset.tab==="transaksi")$("#transaksi").scrollIntoView({behavior:"smooth",block:"start"})});
+ $("#buy").onclick=()=>{const err=$("#err");err.textContent="";const vals={};for(const f of fields){const el=$("#f_"+f[0]),v=el.value.trim();if(!v){err.textContent="Isi "+f[1]+" terlebih dahulu.";el.focus();return}vals[f[1]]=v}if(state.pack===null){err.textContent="Pilih nominal terlebih dahulu.";return}if(state.pay===null){err.textContent="Pilih metode pembayaran terlebih dahulu.";return}const wa=$("#wa").value.replace(/\D/g,"");if(wa.length<9||wa.length>15){err.textContent="Masukkan nomor WhatsApp yang valid.";$("#wa").focus();return}const p=g.packs[state.pack],m=PAY[state.pay],base=p[1]*state.qty,admin=fee(base,m);const order={id:"NX"+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,5).toUpperCase(),game:g.name,item:p[0],price:base,fee:admin,total:base+admin,pay:m.name,fields:vals,wa,at:Date.now(),status:"pending",demo:true};saveOrders([order,...loadOrders()]);location.hash="#/cek/"+order.id};
+ update();
 }
-function findOrder(id) {
-  const q = String(id || "").trim().toUpperCase();
-  return loadOrders().find(o => o.id === q);
-}
-
-/* ===== Tampilan ===== */
-const iconStyle = g => `background:linear-gradient(135deg,${g.c[0]},${g.c[1]})`;
-const logoHTML = g => g.logo
-  ? `<img class="game-logo" src="${g.logo}" alt="Logo ${esc(g.name)}" loading="lazy" onerror="this.remove();this.parentElement.textContent='${g.emoji}'">`
-  : g.emoji;
-const cardHTML = g => `<a class="card" href="#/game/${g.id}"><div class="ico" style="${iconStyle(g)}">${logoHTML(g)}</div><b>${g.name}</b><small>${g.pub} • ${g.cur}</small></a>`;
-
-function viewHome() {
-  app.innerHTML = `
-  <section class="hero">
-    <span class="chip">✦ TOP UP GAME FAVORIT DALAM SATU TEMPAT</span>
-    <h1>Upgrade permainanmu.<br><em>Top up tanpa ribet.</em></h1>
-    <p>Pilih game favorit, tentukan nominal, lalu lanjutkan pesanan dengan alur yang simpel dan jelas.</p>
-    <div class="search"><input id="q" type="search" placeholder="Cari game..." autocomplete="off"></div>
-  </section>
-  <div class="wrap">
-    <div id="hotWrap"><h2>🔥 Pilihan populer</h2><div class="grid" id="hot"></div></div>
-    <h2>Jelajahi semua game</h2>
-    <div class="grid" id="all"></div>
-    <p class="muted" id="empty" hidden>Game tidak ditemukan.</p>
-    <div class="perks">
-      <div class="perk">⚡<b>Alur praktis</b><p>Pilih game dan nominal lewat langkah yang mudah diikuti.</p></div>
-      <div class="perk">🔐<b>Tanpa password</b><p>Form hanya meminta ID game yang diperlukan.</p></div>
-      <div class="perk">🎮<b>Pilihan game</b><p>Temukan beberapa game populer dalam satu katalog.</p></div>
-      <div class="perk">🧾<b>Ringkasan transparan</b><p>Harga dan biaya admin ditampilkan sebelum membuat pesanan.</p></div>
-    </div>
-  </div>`;
-  $("#hot").innerHTML = GAMES.filter(g => g.hot).map(cardHTML).join("");
-  const all = $("#all"), empty = $("#empty"), hotWrap = $("#hotWrap");
-  const draw = q => {
-    const list = GAMES.filter(g => g.name.toLowerCase().includes(q));
-    all.innerHTML = list.map(cardHTML).join("");
-    empty.hidden = list.length > 0;
-    hotWrap.hidden = q !== "";
-  };
-  draw("");
-  $("#q").addEventListener("input", e => draw(e.target.value.trim().toLowerCase()));
-}
-
-function viewGame(g) {
-  const fields = g.fields || [{ k: "uid", l: "User ID", ph: "Masukkan User ID" }];
-  const st = { p: null, m: null };
-  app.innerHTML = `
-  <div class="wrap">
-    <a class="back" href="#/">← Kembali</a>
-    <div class="ghead"><div class="ico" style="${iconStyle(g)}">${logoHTML(g)}</div><div><h1>${g.name}</h1><small>${g.pub} • Top up ${g.cur}</small></div></div>
-    <div class="cols">
-      <div class="steps">
-        <section class="box"><h3><i>1</i> Masukkan ID Akun</h3>
-          <div class="fields">${fields.map(f => `<label>${f.l}${f.opts
-            ? `<select id="f_${f.k}">${f.opts.map(o => `<option>${o}</option>`).join("")}</select>`
-            : `<input id="f_${f.k}" placeholder="${f.ph}" autocomplete="off" maxlength="40">`}</label>`).join("")}</div>
-        </section>
-        <section class="box"><h3><i>2</i> Pilih Nominal</h3><div class="packs" id="packs"></div></section>
-        <section class="box"><h3><i>3</i> Metode Pembayaran</h3><div class="pays" id="pays"></div></section>
-        <section class="box"><h3><i>4</i> Kontak</h3><input id="wa" inputmode="tel" placeholder="No. WhatsApp, contoh 0812xxxxxxx" maxlength="20"></section>
-      </div>
-      <aside class="sum box"><h3>Ringkasan</h3><div id="sumbody"></div>
-        <button class="btn" id="buy" type="button">Beli Sekarang</button>
-        <p class="err" id="err"></p>
-      </aside>
-    </div>
-  </div>`;
-
-  const packsEl = $("#packs"), paysEl = $("#pays");
-  packsEl.innerHTML = g.packs.map((p, i) => `<button type="button" class="pack" data-i="${i}"><b>${p[0]}</b><span>${rupiah(p[1])}</span></button>`).join("");
-  paysEl.innerHTML = PAY.map((m, i) => `<button type="button" class="pay" data-i="${i}"><b>${m.name}</b><span>${m.note}</span></button>`).join("");
-
-  function upd() {
-    const p = st.p != null ? g.packs[st.p] : null;
-    const m = st.m != null ? PAY[st.m] : null;
-    const f = p && m ? fee(p[1], m) : 0;
-    $("#sumbody").innerHTML = `
-      <div class="row"><span>Game</span><b>${g.name}</b></div>
-      <div class="row"><span>Item</span><b>${p ? p[0] : "-"}</b></div>
-      <div class="row"><span>Harga</span><b>${p ? rupiah(p[1]) : "-"}</b></div>
-      <div class="row"><span>Biaya admin</span><b>${p && m ? rupiah(f) : "-"}</b></div>
-      <div class="row tot"><span>Total</span><b>${p && m ? rupiah(p[1] + f) : "-"}</b></div>`;
-  }
-  const pick = (box, key) => e => {
-    const b = e.target.closest("button"); if (!b) return;
-    st[key] = +b.dataset.i;
-    [...box.children].forEach(c => c.classList.toggle("sel", c === b));
-    upd();
-  };
-  packsEl.onclick = pick(packsEl, "p");
-  paysEl.onclick = pick(paysEl, "m");
-  upd();
-
-  $("#buy").onclick = () => {
-    const err = $("#err"); err.textContent = "";
-    const vals = {};
-    for (const f of fields) {
-      const v = $("#f_" + f.k).value.trim();
-      if (!v) { err.textContent = `Isi ${f.l} dulu.`; return; }
-      vals[f.l] = v;
-    }
-    if (st.p == null) { err.textContent = "Pilih nominal dulu."; return; }
-    if (st.m == null) { err.textContent = "Pilih metode pembayaran dulu."; return; }
-    const wa = $("#wa").value.replace(/\D/g, "");
-    if (wa.length < 9 || wa.length > 15) { err.textContent = "Nomor WhatsApp tidak valid."; return; }
-    const p = g.packs[st.p], m = PAY[st.m], f = fee(p[1], m);
-    const order = {
-      id: "TPK" + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 4).toUpperCase(),
-      game: g.name, item: p[0], price: p[1], fee: f, total: p[1] + f, pay: m.name,
-      fields: vals, wa, at: Date.now(), status: "pending"
-    };
-    saveOrders([order, ...loadOrders()]);
-    location.hash = "#/cek/" + order.id;
-  };
-}
-
-function invoiceHTML(o) {
-  const [label, cls] = o.status === "success" ? ["Berhasil", "ok"] : ["Menunggu Pembayaran", "warn"];
-  const rows = Object.entries(o.fields).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join("");
-  return `<section class="box inv">
-    <h3>Invoice ${esc(o.id)} <span class="badge ${cls}">${label}</span></h3>
-    <table>
-      <tr><td>Tanggal</td><td>${new Date(o.at).toLocaleString("id-ID")}</td></tr>
-      <tr><td>Game</td><td>${esc(o.game)}</td></tr>
-      ${rows}
-      <tr><td>Item</td><td>${esc(o.item)}</td></tr>
-      <tr><td>Harga</td><td>${rupiah(o.price)}</td></tr>
-      <tr><td>Biaya admin</td><td>${rupiah(o.fee)}</td></tr>
-      <tr><td>Metode</td><td>${esc(o.pay)}</td></tr>
-      <tr><td>WhatsApp</td><td>${esc(o.wa)}</td></tr>
-      <tr><td><b>Total</b></td><td><b>${rupiah(o.total)}</b></td></tr>
-    </table>
-    ${o.status === "pending"
-      ? `<div class="note">Ini mode demo, belum ada pembayaran sungguhan. Tekan tombol di bawah untuk mensimulasikan pembayaran berhasil.</div>
-         <button class="btn" id="simpay" type="button">Simulasi: Tandai Sudah Dibayar</button>`
-      : `<div class="note">Pembayaran (simulasi) berhasil. Pada toko sungguhan, item dikirim otomatis ke akun game.</div>`}
-  </section>`;
-}
-
-function viewCek(id) {
-  const recent = loadOrders().slice(0, 5);
-  const found = id ? findOrder(id) : null;
-  app.innerHTML = `
-  <div class="wrap">
-    <h2>Cek Transaksi</h2>
-    <p class="muted">Masukkan nomor invoice. Di versi demo, data hanya ada di perangkat yang sama.</p>
-    <form class="cekform" id="cf"><input id="inv" placeholder="Contoh: TPK1A2B3CXY" autocomplete="off" maxlength="30"><button class="btn" type="submit">Cek</button></form>
-    <div id="res">${id ? (found ? invoiceHTML(found) : `<div class="box">Invoice <b>${esc(id)}</b> tidak ditemukan di perangkat ini.</div>`) : ""}</div>
-    ${recent.length ? `<h2>Transaksi Terakhir</h2><div class="box list">${recent.map(o => `<a href="#/cek/${esc(o.id)}"><span>${esc(o.game)} • ${esc(o.item)}<br><small>${esc(o.id)}</small></span><b>${rupiah(o.total)}</b></a>`).join("")}</div>` : ""}
-  </div>`;
-  $("#inv").value = id || "";
-  $("#cf").onsubmit = e => {
-    e.preventDefault();
-    const v = $("#inv").value.trim();
-    if (v) location.hash = "#/cek/" + encodeURIComponent(v);
-  };
-  const sim = $("#simpay");
-  if (sim && found) sim.onclick = () => {
-    const list = loadOrders();
-    const o = list.find(x => x.id === found.id);
-    if (o) { o.status = "success"; saveOrders(list); }
-    viewCek(found.id);
-  };
-}
-
-function viewFaq() {
-  app.innerHTML = `<div class="wrap"><h2>Pertanyaan Umum</h2>${FAQ.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div>`;
-}
-
-/* ===== Router ===== */
-function render() {
-  const [r, arg] = location.hash.replace(/^#\/?/, "").split("/");
-  const id = arg ? decodeURIComponent(arg) : "";
-  const g = r === "game" ? GAMES.find(x => x.id === id) : null;
-  if (g) viewGame(g);
-  else if (r === "cek") viewCek(id);
-  else if (r === "faq") viewFaq();
-  else viewHome();
-  document.querySelectorAll(".nav nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (r === "game" ? "" : r || "")));
-  window.scrollTo(0, 0);
-}
-window.addEventListener("hashchange", render);
-render();
+function invoiceHTML(o){return '<section class="checkout-card invoice"><div class="invoice-top"><h2>Invoice '+esc(o.id)+'</h2><span class="status-pill">'+(o.status==="success"?"Berhasil (simulasi)":"Menunggu")+'</span></div><div class="demo-warning">Ini invoice demo. Tidak ada pembayaran nyata dan item tidak akan dikirim.</div><div class="invoice-rows"><div><span>Tanggal</span><b>'+new Date(o.at).toLocaleString("id-ID")+'</b></div><div><span>Game</span><b>'+esc(o.game)+'</b></div>'+Object.entries(o.fields).map(([k,v])=>'<div><span>'+esc(k)+'</span><b>'+esc(v)+'</b></div>').join("")+'<div><span>Item</span><b>'+esc(o.item)+'</b></div><div><span>Harga</span><b>'+rupiah(o.price)+'</b></div><div><span>Biaya admin</span><b>'+rupiah(o.fee)+'</b></div><div><span>Metode</span><b>'+esc(o.pay)+'</b></div><div><span>WhatsApp</span><b>'+esc(o.wa)+'</b></div><div class="invoice-total"><span>Total</span><b>'+rupiah(o.total)+'</b></div></div>'+(o.status==="pending"?'<button id="simpay" class="primary-button" type="button">Simulasi: tandai dibayar</button>':'<p class="inline-message">Status berhasil hanya simulasi lokal.</p>')+'</section>'}
+function viewCek(id){const found=id?findOrder(id):null,recent=loadOrders().slice(0,5);app.innerHTML='<div class="wrap utility-page"><div class="breadcrumbs"><a href="#/">Beranda</a><span>›</span><span>Cek transaksi</span></div><h1>Cek Transaksi</h1><p class="utility-intro">Periksa invoice yang dibuat di browser/perangkat ini.</p><form id="cf" class="transaction-search"><input id="inv" placeholder="Masukkan nomor invoice" value="'+esc(id||"")+'"><button class="primary-button">Cek transaksi →</button></form><div id="result">'+(id?(found?invoiceHTML(found):'<div class="checkout-card">Invoice <b>'+esc(id)+'</b> tidak ditemukan di perangkat ini.</div>'):"")+'</div>'+(recent.length?'<h2>Transaksi terakhir</h2><div class="checkout-card recent-list">'+recent.map(o=>'<a href="#/cek/'+esc(o.id)+'"><span><b>'+esc(o.game)+'</b><small>'+esc(o.id)+' · '+esc(o.item)+'</small></span><strong>'+rupiah(o.total)+'</strong></a>').join("")+'</div>':"")+'</div>';$("#cf").onsubmit=e=>{e.preventDefault();if($("#inv").value.trim())location.hash="#/cek/"+encodeURIComponent($("#inv").value.trim())};const sim=$("#simpay");if(sim&&found)sim.onclick=()=>{const list=loadOrders(),o=list.find(x=>x.id===found.id);if(o)o.status="success";saveOrders(list);viewCek(found.id)}}
+function viewFaq(){app.innerHTML='<div class="wrap utility-page"><div class="breadcrumbs"><a href="#/">Beranda</a><span>›</span><span>Bantuan</span></div><span class="eyebrow">PUSAT BANTUAN NEXORA</span><h1>Pertanyaan umum</h1><p class="utility-intro">Informasi singkat tentang pemesanan di NEXORA.</p>'+FAQ.map(([q,a])=>'<details><summary>'+esc(q)+'</summary><p>'+esc(a)+'</p></details>').join("")+'</div>'}
+function render(){const parts=location.hash.replace(/^#\/?/,"").split("/"),r=parts[0]||"",arg=parts[1]?decodeURIComponent(parts[1]):"";const g=r==="game"?GAMES.find(x=>x.id===arg||x.slug===arg):GAMES.find(x=>x.slug===r);if(g)viewGame(g);else if(r==="cek")viewCek(arg);else if(r==="faq")viewFaq();else viewHome();document.querySelectorAll(".nav nav a").forEach(a=>a.classList.toggle("on",a.dataset.r===(g?"":r)));window.scrollTo(0,0)}
+window.addEventListener("hashchange",render);render();
