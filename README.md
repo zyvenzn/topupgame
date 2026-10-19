@@ -30,6 +30,7 @@ Bisa juga di-deploy gratis lewat GitHub Pages atau Vercel (situs statis, tidak p
 | `index.html` | Kerangka halaman |
 | `style.css` | Gaya dasar |
 | `polish.css` | Lapisan poles (font, animasi, fokus). Hapus `<link>`-nya untuk balik ke tampilan lama |
+| `premium.css` | Tema premium gelap (midnight violet + emas). Hapus `<link>`-nya untuk balik ke tema terang |
 | `app.js` | Data game, router, halaman, alur order |
 | `assets/` | Gambar logo game (satu file per game: `mlbb.jpg`, `mcgg.jpg`, `ffmax.jpg`, `ff.jpg`, `arena.jpg`, `pubgm.jpg`, `hok.jpg`, `genshin.jpg`, `valo.jpg`) |
 
