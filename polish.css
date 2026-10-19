@@ -1,0 +1,76 @@
+/* NEXORA — polish layer (dimuat setelah style.css). Hapus file ini + <link>-nya di index.html untuk balik ke tampilan lama. */
+
+/* ---------- Keterbacaan: font lebih besar, terutama di HP ---------- */
+body{font-size:15px}
+.demo-bar{font-size:11px}
+.nav nav{font-size:13px}.nav-cta{font-size:12px}
+.eyebrow{font-size:11px}
+.hero-copy p{font-size:15px}.trust-copy{font-size:12px}.primary-link{font-size:13px}
+.trust-strip b{font-size:13px}.trust-strip small{font-size:11px}
+.section-heading p{font-size:13px}.catalog-search input{font-size:16px}.pill{font-size:12px;padding:9px 15px}
+.game-card-copy b{font-size:13px}.game-card-copy small{font-size:11px}
+.home-promo p,.article-section p{font-size:13px}.info-cards b{font-size:13px}.info-cards span,.info-cards strong{font-size:12px}
+.breadcrumbs{font-size:12px}.product-title p{font-size:13px}.publisher{font-size:11px}
+.product-badges span{font-size:11px}.service-promises b{font-size:12px}.service-promises small{font-size:11px}
+.tab{font-size:13px}
+.step-title h2{font-size:16px}.step-title p{font-size:12px}
+.account-fields label,.contact-field{font-size:12px}
+.account-fields input,.account-fields select,.contact-field input,.promo-row input,.transaction-search input{font-size:16px;padding:13px}
+.field-hint,.inline-message{font-size:11px}
+.pack-option b{font-size:12px}.pack-option strong{font-size:14px}
+.quantity-row label{font-size:12px}.promo-row button{font-size:12px}
+.payment-option b{font-size:12px}.payment-option small{font-size:10px}
+.summary-head h2{font-size:15px}.summary-game b{font-size:13px}.summary-game small{font-size:11px}
+.summary-row,.summary-row b{font-size:12px}.summary-total{font-size:13px}
+.demo-warning{font-size:11px}.primary-button{font-size:13px}.error-message{font-size:12px}.help-link{font-size:12px}
+.description-copy p,.description-copy li,.review-card p{font-size:13px}.disclaimer{font-size:11px!important}.review-note{font-size:11px}
+.faq-product summary,.utility-page summary{font-size:13px}.faq-product details p,.utility-page details p{font-size:12px}
+.utility-intro{font-size:13px}.invoice-rows>div{font-size:13px}.status-pill{font-size:11px}
+.recent-list b,.recent-list strong{font-size:13px}.recent-list small{font-size:11px}
+footer{font-size:12px}.footer-links b{font-size:13px}.footer-bottom{font-size:11px}
+
+/* ---------- Logo game dari file lokal: tampil penuh (tanpa padding putih) ---------- */
+.game-logo[src^="assets/"]{padding:0;object-fit:cover;background:transparent}
+.game-art,.product-logo,.mini-logo{background-clip:padding-box}
+
+/* ---------- Gerak & kedalaman ---------- */
+.hero-tile{animation:nx-float 5s ease-in-out infinite}
+.tile-two{animation-delay:-1.6s}.tile-three{animation-delay:-3.2s}
+.hero-center{animation:nx-tilt 7s ease-in-out infinite}
+.hero-orbit{animation:nx-spin 40s linear infinite}.orbit-two{animation-duration:55s;animation-direction:reverse}
+@keyframes nx-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes nx-tilt{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(-4deg) translateY(-4px)}}
+@keyframes nx-spin{to{transform:rotate(360deg)}}
+
+.home-hero{background:radial-gradient(900px 340px at 85% 10%,#ddd6ff 0%,transparent 60%),linear-gradient(120deg,#fff 0%,#f4f1ff 57%,#e8e5ff 100%)}
+.hero-copy h1 em{background:linear-gradient(90deg,#6756e8,#a06bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.game-card{will-change:transform}
+.game-card:hover .game-art{transform:scale(1.05) rotate(-2deg)}
+.game-art{transition:transform .2s;box-shadow:0 6px 14px rgba(32,36,58,.14)}
+.game-card:hover .card-arrow{color:var(--purple);transform:translate(2px,-2px)}
+.card-arrow{transition:transform .18s,color .18s}
+
+.pack-option{position:relative}
+.pack-option.selected::after{content:"✓";position:absolute;top:8px;right:9px;width:18px;height:18px;border-radius:50%;background:var(--purple);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center}
+.pack-option:active,.payment-option:active,.primary-button:active,.primary-link:active{transform:scale(.98)}
+.primary-button,.primary-link,.pack-option,.payment-option{transition:background .15s,transform .1s,border-color .15s,box-shadow .15s}
+.primary-button{box-shadow:0 8px 18px rgba(103,86,232,.28)}
+
+.checkout-card,.order-summary,.review-card,.info-cards a{transition:box-shadow .2s,border-color .2s}
+.checkout-card:focus-within{border-color:#cfc8ff;box-shadow:0 8px 24px rgba(103,86,232,.08)}
+
+/* ---------- Aksesibilitas ---------- */
+:focus-visible{outline:3px solid #9d91ff;outline-offset:2px;border-radius:6px}
+.pill,.tab,.pack-option,.payment-option,.primary-button,.primary-link,.nav-cta{min-height:40px}
+
+/* ---------- Tombol "Buat Pesanan" menempel di bawah pada HP ---------- */
+@media(max-width:780px){
+  .order-summary{grid-row:auto}
+  .product-layout{padding-bottom:6px}
+}
+
+/* ---------- Hormati preferensi kurangi gerak ---------- */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
