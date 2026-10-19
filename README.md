@@ -31,7 +31,7 @@ Bisa juga di-deploy gratis lewat GitHub Pages atau Vercel (situs statis, tidak p
 | `style.css` | Gaya dasar |
 | `polish.css` | Lapisan poles (font, animasi, fokus). Hapus `<link>`-nya untuk balik ke tampilan lama |
 | `app.js` | Data game, router, halaman, alur order |
-| `assets/` | Gambar logo game (`mlbb.jpg`, `mcgg.jpg`, `ffmax.jpg`) |
+| `assets/` | Gambar logo game (satu file per game: `mlbb.jpg`, `mcgg.jpg`, `ffmax.jpg`, `ff.jpg`, `arena.jpg`, `pubgm.jpg`, `hok.jpg`, `genshin.jpg`, `valo.jpg`) |
 
 ## Ganti nama toko dan data
 - Nama toko: cari `NEXORA` di `index.html` dan `app.js`
