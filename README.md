@@ -1,15 +1,18 @@
-# TOPUPKU — Situs Top Up Game (versi tampilan)
+# NEXORA — Situs Top Up Game (versi tampilan)
 
 Front-end statis untuk toko top up game. Murni HTML + CSS + JavaScript, tanpa framework dan tanpa build.
 
 > **Status: DEMO.** Pembayaran dan pengiriman item belum aktif. Data transaksi hanya disimpan di `localStorage` browser.
 
 ## Fitur
-- Beranda dengan pencarian game dan daftar game populer
-- Halaman order: ID akun, pilih nominal, metode bayar, nomor WhatsApp, ringkasan harga
+- Beranda dengan pencarian game dan filter kategori (Mobile / PC)
+- Halaman order: ID akun, pilih nominal, **kode promo (demo)**, metode bayar, nomor WhatsApp, ringkasan harga
 - Invoice dan Cek Transaksi (berdasarkan nomor invoice, di perangkat yang sama)
 - FAQ
-- Tampilan mobile-first, tema gelap
+- Tampilan mobile-first, font nyaman dibaca di HP, animasi halus (mati otomatis jika perangkat meminta kurangi gerak)
+
+### Kode promo demo
+`NEXORA10` (10%) dan `HEMAT5` (5%). Daftarnya ada di objek `PROMOS` di `app.js`. Ini hanya simulasi di browser, bukan sistem promo sungguhan.
 
 ## Cara jalankan
 Buka `index.html` langsung di browser, atau jalankan server lokal:
@@ -25,13 +28,17 @@ Bisa juga di-deploy gratis lewat GitHub Pages atau Vercel (situs statis, tidak p
 | File | Isi |
 |------|-----|
 | `index.html` | Kerangka halaman |
-| `style.css` | Seluruh gaya |
+| `style.css` | Gaya dasar |
+| `polish.css` | Lapisan poles (font, animasi, fokus). Hapus `<link>`-nya untuk balik ke tampilan lama |
+| `premium.css` | Tema premium gelap (midnight violet + emas). Hapus `<link>`-nya untuk balik ke tema terang |
 | `app.js` | Data game, router, halaman, alur order |
+| `assets/` | Gambar logo game (satu file per game: `mlbb.jpg`, `mcgg.jpg`, `ffmax.jpg`, `ff.jpg`, `arena.jpg`, `pubgm.jpg`, `hok.jpg`, `genshin.jpg`, `valo.jpg`) |
 
 ## Ganti nama toko dan data
-- Nama toko: cari `TOPUPKU` di `index.html` dan `app.js`
-- Game, nominal, dan harga: array `GAMES` di `app.js` (harga masih contoh)
+- Nama toko: cari `NEXORA` di `index.html` dan `app.js`
+- Game, nominal, dan harga: array `GAMES` di `app.js` (harga masih contoh). Field `cat` (`mobile` / `pc`) menentukan kategori filter
 - Metode bayar dan biaya admin: array `PAY` di `app.js`
+- Logo: taruh gambar di `assets/` lalu isi field `logo` di `GAMES`. Jika gambar gagal dimuat, otomatis tampil emoji
 
 ## Agar jadi toko sungguhan
 Yang masih perlu dibuat:
@@ -44,5 +51,5 @@ Yang masih perlu dibuat:
 
 Kunci API supplier dan payment **jangan** ditaruh di front-end. Simpan di server (environment variable).
 
-## Catatan
-Logo dan nama game milik masing-masing penerbit. Ikon di situs ini hanya emoji, bukan logo resmi.
+## Catatan hak cipta
+Logo dan nama game adalah milik masing-masing penerbit dan dipakai di sini hanya sebagai contoh tampilan. Sebelum situs ini dipakai untuk berjualan sungguhan, pastikan izin penggunaan logo/merek, atau ganti dengan ikon sendiri.
